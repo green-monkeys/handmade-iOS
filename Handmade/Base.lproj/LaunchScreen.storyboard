@@ -13,17 +13,29 @@
         <!--View Controller-->
         <scene sceneID="EHf-IW-A2E">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="01J-lp-oVM" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="Homepage" translatesAutoresizingMaskIntoConstraints="NO" id="g6r-pr-AlR">
+                                <rect key="frame" x="16" y="248" width="343" height="171"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.40419998759999998" green="0.73713392020000001" blue="0.72965496780000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <constraints>
+                            <constraint firstItem="g6r-pr-AlR" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="Eh7-yL-lzb"/>
+                            <constraint firstItem="g6r-pr-AlR" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="hqP-7S-MNh"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="53" y="375"/>
+            <point key="canvasLocation" x="52" y="374.66266866566718"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Homepage" width="1200" height="628"/>
+    </resources>
 </document>
