@@ -12,7 +12,7 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    var cga:CGA?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -39,6 +39,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    }
+    func parseCgaFromJSON(data:Data){
+        do{
+            //here dataResponse received from a network request
+            let jsonResponse = try JSONSerialization.jsonObject(with:
+                data, options: [])
+            print(jsonResponse) //Response resul
+            let json = jsonResponse as! [String:Any]
+            guard let imgURL = json["imageUrl"] as? String else {return}
+            self.cga = CGA(email: json["email"] as! String,
+                           firstName: json["firstName"] as! String,
+                           lastName: json["lastName"] as! String,
+                           imageURL: imgURL,
+                           image: nil)
+        } catch let parsingError {
+            print("Error", parsingError)
+        }
+
     }
 
 

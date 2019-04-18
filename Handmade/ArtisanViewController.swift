@@ -9,11 +9,23 @@
 import UIKit
 
 class ArtisanViewController: UIViewController {
-
+    @IBOutlet var phoneNumber: UILabel!
+    @IBOutlet var email: UILabel!
+    @IBOutlet var profilePicture: UIImageView!
+    @IBOutlet var name: UILabel!
+    var artisan:Artisan!
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        let image = artisan.fullImage ?? UIImage(named: "fake_artisan_image")!
+        self.profilePicture.image = ArtisanListViewController.resizeImage(image:image ,
+                                                  targetSize: CGSize(width: 180, height: 180))
+        self.profilePicture.contentMode = .scaleAspectFit
+        self.profilePicture.layer.cornerRadius = 90
+        self.profilePicture.layer.masksToBounds =  true
+        self.email.text = self.artisan.username
+        self.name.text = self.artisan.name
+        self.phoneNumber.text = self.artisan.phone
+        self.phoneNumber.text! += self.artisan.isSmart ? " (Smart)" : ""
     }
     
 

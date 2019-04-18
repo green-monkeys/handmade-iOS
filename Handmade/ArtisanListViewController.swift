@@ -15,18 +15,26 @@ class ArtisanCell: UITableViewCell{
     
 }
 class Artisan{
-    var image:UIImage
+    var image:UIImage?
+    var fullImage:UIImage?
     var name:String
-    var id:String
-    var phone:String
+    var phone:String?
     var isSmart:Bool
-    init(name:String, image:String) {
+    var username:String
+    var localImage = false
+    init(name:String, imageUrl:String, username:String, phone:String?, isSmart:Bool) {
         self.name = name
-        self.image = ArtisanListViewController.resizeImage(image: UIImage(named:image)!,
-                                                           targetSize:CGSize(width:50, height:50))
-        self.id = ""
-        self.phone = "123-456-7890"
-        self.isSmart = true
+        self.phone = phone
+        self.isSmart = isSmart
+        self.username = username
+    }
+    init(name:String, imageUrl:String, username:String, phone:String?, isSmart:Bool, localImage:UIImage) {
+        self.name = name
+        self.phone = phone
+        self.isSmart = isSmart
+        self.username = username
+        self.fullImage = localImage
+        self.image = ArtisanListViewController.resizeImage(image: self.fullImage!, targetSize: CGSize(width:50,height:50))
     }
 }
 class ArtisanListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
@@ -34,22 +42,37 @@ class ArtisanListViewController: UIViewController, UITableViewDelegate, UITableV
     @IBOutlet var artisanTableView: UITableView!
     @IBOutlet var profileImage: UIImageView!
     var artisans = [Artisan]()
+    var delegate = UIApplication.shared.delegate as! AppDelegate
+    let overlay = UIView()
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.profileImage.image = ArtisanListViewController.resizeImage(image:UIImage(named: "profile.jpg")!, targetSize:CGSize(width:50, height:50))
-        self.profileImage.layer.cornerRadius = 25.0
+        self.profileImage.image = ArtisanListViewController.resizeImage(image:UIImage(named: "profile.jpg")!, targetSize:CGSize(width:80, height:80))//This needs to be changed later
+        overlay.backgroundColor = UIColor(white: 0.5, alpha: 0.5)
+        overlay.frame =  self.artisanTableView.frame
+        self.view.addSubview(overlay)
+        var activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
+        activityIndicator.center = overlay.center
+        overlay.addSubview(activityIndicator)
+        activityIndicator.startAnimating()
+        self.profileImage.layer.cornerRadius = 40.0
         self.profileImage.layer.masksToBounds =  true
         self.artisanTableView.delegate =  self
         self.artisanTableView.dataSource =  self
-        self.artisans = [Artisan(name:"Patrick Beninga", image:"profile.jpg"),
-        Artisan(name:"Patrick Beninga",  image:"profile.jpg"),
-        Artisan(name:"Patrick Beninga",  image:"profile.jpg"),
-        Artisan(name:"Patrick Beninga",  image:"profile.jpg")]
         self.artisanTableView.backgroundColor = self.view.backgroundColor
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Log out", style: .plain, target: self, action: #selector(logOut))
         self.navigationController?.navigationBar.isHidden = false
         self.navigationItem.title = "Artisans"
+        self.getArtisans()
+        self.artisanTableView.layer.borderWidth = 2
+        self.artisanTableView.layer.borderColor = UIColor.white.cgColor
         // Do any additional setup after loading the view.
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if let selectionIndexPath = self.artisanTableView.indexPathForSelectedRow {
+            self.artisanTableView.deselectRow(at: selectionIndexPath, animated: animated)
+        }
+        self.artisanTableView.reloadData()
     }
     @objc func logOut (){
         self.navigationController?.setViewControllers(
@@ -63,11 +86,14 @@ class ArtisanListViewController: UIViewController, UITableViewDelegate, UITableV
         return 60
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "ArtisanViewController") as! ArtisanViewController
+        vc.artisan = self.artisans[indexPath.row]
+        self.navigationController?.pushViewController(vc, animated: true)
+        print("hi")
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "artisanCell") as! ArtisanCell
-        cell.profileImage.image = self.artisans[indexPath.row].image
+        cell.profileImage.image = self.artisans[indexPath.row].image ?? ArtisanListViewController.resizeImage(image: UIImage(named: "fake_artisan_image")!, targetSize: CGSize(width:50,height:50))
         cell.ArtisanName.text = self.artisans[indexPath.row].name
         cell.profileImage.layer.cornerRadius = 25.0
         cell.profileImage.layer.masksToBounds =  true
@@ -78,8 +104,73 @@ class ArtisanListViewController: UIViewController, UITableViewDelegate, UITableV
         
         return cell
     }
-    
+    func getArtisans(){
+        if ((self.delegate.cga) != nil){
+            let urlString = "http://capstone406.herokuapp.com/cga/artisans?email="+delegate.cga!.email
+            let url = URL(string: urlString)!
 
+            print(url)
+            let task = URLSession.shared.dataTask(with: url){
+                (data, response, error) -> Void in
+                if(error != nil){
+                    print(error)
+                    return
+                }
+                DispatchQueue.main.async {
+                    guard let data = data else {return}
+                    self.parseArtisans(data: data)
+                    print(self.artisans)
+                    self.artisanTableView.reloadData()
+                    self.overlay.removeFromSuperview()
+                    self.overlay.subviews[0].removeFromSuperview()
+                }
+            }
+            task.resume()
+        }
+
+    }
+    func parseArtisans(data:Data){
+        do{
+            let jsonResponse = try JSONSerialization.jsonObject(with:
+            data, options: [])
+            guard let dataJson = jsonResponse as? [String: [[String:Any]]] else {return}
+            print(dataJson)
+            guard let json = dataJson["data"] else {return}
+            for x in json {
+                guard let firstName = x["first_name"] as? String else {return}
+                guard let lastName = x["last_name"] as? String else {return}
+                guard let username = x["username"] as? String else {return}
+                let imageURL = "http://capstone406.herokuapp.com/artisan/image?username=" + username
+                let phone  = x["phone"] as? Int ?? nil
+                var phoneString = ""
+                if(phone != nil){
+                    phoneString = String(phone!)
+                }
+                let isSmart = x["is_smart"] as? Bool ?? false
+                let art = Artisan(name: firstName + " " + lastName , imageUrl: imageURL, username: username, phone:phoneString , isSmart: isSmart)
+                artisans.append(art)
+                self.fetchImage(imageURL, art)
+            }
+        }catch let parsingError{
+            print("here")
+            print("Error", parsingError)
+            print("here")
+        }
+        
+    }
+    func fetchImage(_ urlString: String, _ a:Artisan){
+        print("Download Started")
+        DispatchQueue.global().async { [weak self] in
+            let url = URL(string:urlString)!
+            if let data  = try? Data(contentsOf: url){
+                DispatchQueue.main.async() {
+                    a.fullImage = UIImage(data: data)
+                    a.image = ArtisanListViewController.resizeImage(image: a.fullImage!, targetSize: CGSize(width:50,height:50))
+                    self?.artisanTableView.reloadData()
+                }
+            }
+        }
+    }
     /*
     // MARK: - Navigation
 
@@ -90,19 +181,7 @@ class ArtisanListViewController: UIViewController, UITableViewDelegate, UITableV
     }
     */
     static func resizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
-        let size = image.size
-        
-        let widthRatio  = targetSize.width  / image.size.width
-        let heightRatio = targetSize.height / image.size.height
-        
-        // Figure out what our orientation is, and use that to form the rectangle
-        var newSize: CGSize
-        if(widthRatio > heightRatio) {
-            newSize = CGSize(width: size.width * heightRatio, height: size.height * heightRatio)
-        } else {
-            newSize = CGSize(width: size.width * widthRatio,  height: size.height * widthRatio)
-        }
-        
+        let newSize = targetSize
         // This is the rect that we've calculated out and this is what is actually used below
         let rect = CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height)
         
