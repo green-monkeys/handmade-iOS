@@ -1,8 +1,11 @@
 # Green Monkeys Handmade App
-## Handmade Front End - iOS Swift [Github Link](https://github.com/green-monkeys/handmade-iOS)
-## Back End - Node.js Express Hosted on Heroku [Github Link](https://github.com/green-monkeys/handmade_backend)
+## An iOS App for Artisan Collectives
+One of the main reasons that Artisans are unable to get themselves listed on Amazon's Handmade store is the requirement for a bank account. Now, artisans can form collectives or enter with existing ones to get their products listed on Handmade. This opens up a wealth of new opportunities for artisans located in remote or rural areas without the need for a bank account or consistent connection to the web. 
 
 ## [Deployment Site](https://green-monkeys.github.io/handmade-iOS/)
+
+### Getting Started
+#### Installing the iOS App
 ##### Required Tools:
 - Mac running MacOS 10.13.6 (High Sierra) or later
 - [Xcode](https://developer.apple.com/xcode/)
@@ -86,6 +89,10 @@ capstone406.herokuapp.com
             - folder (artisan|cga)
             - filename (artisan username|cga email)
 ```
+
+### Github Repositories
+#### [Handmade Front End - iOS Swift](https://github.com/green-monkeys/handmade-iOS)
+#### [Back End - Node.js Express Hosted on Heroku](https://github.com/green-monkeys/handmade_backend)
 
 ### End User License Agreement
 View our EULA [here](https://www.eulatemplate.com/live.php?token=6P4s5xCfHJOrPJqsP5s1GYwY6RalQBG8)
