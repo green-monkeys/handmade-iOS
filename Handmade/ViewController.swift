@@ -15,8 +15,10 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.amazonLoginButton.sizeToFit()
-        self.navigationController?.navigationBar.isHidden = true
 
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.navigationBar.isHidden = true
     }
 
     @IBAction func amazonLogin(_ sender: Any) {

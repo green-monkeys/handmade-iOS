@@ -16,7 +16,6 @@
 		CD95A7A52256AFFA008A6583 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CD95A7A32256AFFA008A6583 /* LaunchScreen.storyboard */; };
 		CD95A7B02256AFFA008A6583 /* HandmadeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD95A7AF2256AFFA008A6583 /* HandmadeTests.swift */; };
 		CD95A7BB2256AFFA008A6583 /* HandmadeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD95A7BA2256AFFA008A6583 /* HandmadeUITests.swift */; };
-		CD95A7C92256B31C008A6583 /* btnlwa_gold_loginwithamazon_pressed.png in Resources */ = {isa = PBXBuildFile; fileRef = CD95A7C82256B31C008A6583 /* btnlwa_gold_loginwithamazon_pressed.png */; };
 		CD95A7D0225FDF26008A6583 /* ArtisanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD95A7CF225FDF26008A6583 /* ArtisanViewController.swift */; };
 		CD95A7D222665DB9008A6583 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD95A7D122665DB9008A6583 /* LoginViewController.swift */; };
 		CD95A7D422665DCD008A6583 /* MakeArtisanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD95A7D322665DCD008A6583 /* MakeArtisanViewController.swift */; };
@@ -57,7 +56,6 @@
 		CD95A7B62256AFFA008A6583 /* HandmadeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HandmadeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD95A7BA2256AFFA008A6583 /* HandmadeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandmadeUITests.swift; sourceTree = "<group>"; };
 		CD95A7BC2256AFFA008A6583 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CD95A7C82256B31C008A6583 /* btnlwa_gold_loginwithamazon_pressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = btnlwa_gold_loginwithamazon_pressed.png; path = "../../Downloads/handmade-master/LWA_for_Android/hdpi/btnlwa_gold_loginwithamazon_pressed.png"; sourceTree = "<group>"; };
 		CD95A7CF225FDF26008A6583 /* ArtisanViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtisanViewController.swift; sourceTree = "<group>"; };
 		CD95A7D122665DB9008A6583 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		CD95A7D322665DCD008A6583 /* MakeArtisanViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeArtisanViewController.swift; sourceTree = "<group>"; };
@@ -94,7 +92,6 @@
 		CD95A78E2256AFF9008A6583 = {
 			isa = PBXGroup;
 			children = (
-				CD95A7C82256B31C008A6583 /* btnlwa_gold_loginwithamazon_pressed.png */,
 				CD95A7992256AFF9008A6583 /* Handmade */,
 				CD95A7AE2256AFFA008A6583 /* HandmadeTests */,
 				CD95A7B92256AFFA008A6583 /* HandmadeUITests */,
@@ -259,7 +256,6 @@
 				CD95A7D922666934008A6583 /* profile.jpg in Resources */,
 				CD95A7A22256AFFA008A6583 /* Assets.xcassets in Resources */,
 				CD727F4B2267CEB800DAA886 /* fake_artisan_image.png in Resources */,
-				CD95A7C92256B31C008A6583 /* btnlwa_gold_loginwithamazon_pressed.png in Resources */,
 				CD95A7A02256AFF9008A6583 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
