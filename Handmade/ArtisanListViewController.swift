@@ -78,7 +78,7 @@ class ArtisanListViewController: UIViewController, UITableViewDelegate, UITableV
         DispatchQueue.global().async {
             AMZNAuthorizationManager().signOut({ (err: Error?) in
                 if(err != nil) {
-                    print(err?.localizedDescription)
+                    print(err!)
                 }
                 else {
                     print("signed out of Amazon")

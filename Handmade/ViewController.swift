@@ -17,33 +17,25 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         self.amazonLoginButton.sizeToFit()
         self.navigationController?.navigationBar.isHidden = true
-
+        
     }
-
+    
     @IBAction func amazonLogin(_ sender: Any) {
         
-        DispatchQueue.global().async {
-            let request = AMZNAuthorizeRequest()
-            var verified = false
-            request.scopes = [AMZNProfileScope.profile()]
-            AMZNAuthorizationManager().authorize(request, withHandler: { (authres: AMZNAuthorizeResult?, canceled : Bool, error : Error?) -> () in
-                print("attempting to log in")
-                if(authres != nil) {
-                    print("logged in with amazon!!")
-                    print(authres!.user!.email)
-                    verified = true
-                }
-                else {
-                    print("did not authenticate with amazon!")
-                }
-                } as! AMZNAuthorizationRequestHandler)
-            print("theoretically we do verification")
-            
-            DispatchQueue.main.async {
-                if(verified){
-                    let delegate = UIApplication.shared.delegate as! AppDelegate
-                    delegate.parseCgaFromJSON(data:
-                        """
+        let request = AMZNAuthorizeRequest()
+        var verified = false
+        request.scopes = [AMZNProfileScope.profile()]
+        AMZNAuthorizationManager().authorize(request, withHandler: { (authres: AMZNAuthorizeResult?, canceled : Bool, error : Error?) -> () in
+            print("attempting to log in")
+            if(authres != nil) {
+                print("logged in with amazon!!")
+                print(authres!.user!.email)
+                verified = true
+                DispatchQueue.main.async {
+                    if(verified){
+                        let delegate = UIApplication.shared.delegate as! AppDelegate
+                        delegate.parseCgaFromJSON(data:
+                            """
 {
     "email":"test@email.com",
     "id":1,
@@ -54,12 +46,18 @@ class ViewController: UIViewController {
                         
 }
 """.data(using: .utf8)!)
-                    self.navigationController?.setViewControllers(
-                        [self.storyboard!.instantiateViewController(withIdentifier: "ArtisanListViewController")],
-                        animated: true)
+                        self.navigationController?.setViewControllers(
+                            [self.storyboard!.instantiateViewController(withIdentifier: "ArtisanListViewController")],
+                            animated: true)
+                    }
                 }
             }
-        }
+            else {
+                print("did not authenticate with amazon!")
+            }
+            } as! AMZNAuthorizationRequestHandler)
+        print("theoretically we do verification")
+        
     }
     @IBAction func artisanLogin(_ sender: Any) {
         self.navigationController?.pushViewController(self.storyboard!.instantiateViewController(withIdentifier: "loginVC"), animated: true)
