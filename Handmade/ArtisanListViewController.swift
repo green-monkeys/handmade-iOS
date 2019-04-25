@@ -75,9 +75,23 @@ class ArtisanListViewController: UIViewController, UITableViewDelegate, UITableV
         self.artisanTableView.reloadData()
     }
     @objc func logOut (){
-        self.navigationController?.setViewControllers(
-            [self.storyboard!.instantiateViewController(withIdentifier: "rootViewController")],
-            animated: true)
+        DispatchQueue.global().async {
+            AMZNAuthorizationManager().signOut({ (err: Error?) in
+                if(err != nil) {
+                    print(err?.localizedDescription)
+                }
+                else {
+                    print("signed out of Amazon")
+                }
+            })
+            //amazon logout stuff
+            DispatchQueue.main.async{
+                self.navigationController?.setViewControllers(
+                    [self.storyboard!.instantiateViewController(withIdentifier: "rootViewController")],
+                    animated: true)
+            }
+        }
+        
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.artisans.count;

@@ -2,15 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSAllowsArbitraryLoads</key>
-		<true/>
-	</dict>
-	<key>NSCameraUsageDescription</key>
-	<string>This app needs to use your camera for picture selection</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>This app would like to use your photo library for picture selection</string>
+	<key>APIKey</key>
+	<string>eyJhbGciOiJSU0EtU0hBMjU2IiwidmVyIjoiMSJ9.eyJ2ZXIiOiIzIiwiZW5kcG9pbnRzIjp7ImF1dGh6IjoiaHR0cHM6Ly93d3cuYW1hem9uLmNvbS9hcC9vYSIsInRva2VuRXhjaGFuZ2UiOiJodHRwczovL2FwaS5hbWF6b24uY29tL2F1dGgvbzIvdG9rZW4ifSwiY2xpZW50SWQiOiJhbXpuMS5hcHBsaWNhdGlvbi1vYTItY2xpZW50LjE1Y2E1YWZiZjE3OTQxMTI4NzhjYzA2M2ZiZDNjMmRkIiwiYXBwRmFtaWx5SWQiOiJhbXpuMS5hcHBsaWNhdGlvbi4zMjk1ZjdmOGFjNmE0N2JlYTlkN2I3NWY3YzNmNGViYyIsImJ1bmRsZVNlZWRJZCI6ImNvbS5CZW5pbmdhLkhhbmRtYWRlIiwiYnVuZGxlSWQiOiJjb20uQmVuaW5nYS5IYW5kbWFkZSIsImlzcyI6IkFtYXpvbiIsInR5cGUiOiJBUElLZXkiLCJhcHBWYXJpYW50SWQiOiJhbXpuMS5hcHBsaWNhdGlvbi1jbGllbnQuMjI0MzBjZjY2NzBmNGJkNWIzNGI0NDljZGVmNjUzMTIiLCJ0cnVzdFBvb2wiOm51bGwsImFwcElkIjoiYW16bjEuYXBwbGljYXRpb24tY2xpZW50LjIyNDMwY2Y2NjcwZjRiZDViMzRiNDQ5Y2RlZjY1MzEyIiwiaWQiOiI4ZjExNzY3ZC02NTYxLTExZTktYTM4YS04MzhhY2FmZWEyM2EiLCJpYXQiOiIxNTU1OTgwNTI5ODAzIn0=.OMaJ+2qPviIykL4c00kqEKwyZQiMPgV4Sj5JXvyvs6hhbWVv8QBqhA9pGkTrO770aKlIGizRQd4PhxzQJAl5BmIplJsUCPaQt9MAaQoUgWF+DcAeQiG3724zx6VP22m1LO2q6dSlEOFf+6A/ZAP4ABlaDIz12VU8wmFAUyQYV2wMC0n8/VuBUQw55SI9uInVbr5OSPbwBeogel10jByand82l+bTqmPEcVhKtU9XnqGqUWE3RadbEJiAVkaDX5rLE+8APXmM2LTmYJZqm878MOf/2bU/YGvEo+U8Ah9H7qZVgRKeEbuWpi/OpAsnvB+qN85hGDTOq633scEdPFL8tA==</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
@@ -25,10 +18,33 @@
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>Beninga.Handmade</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>amzn-com.Beninga.Handmade</string>
+			</array>
+		</dict>
+		<dict/>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>This app needs to use your camera for picture selection</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This app would like to use your photo library for picture selection</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import LoginWithAmazon
 
 class ViewController: UIViewController {
     @IBOutlet var amazonLoginButton: UIButton!
@@ -20,9 +21,24 @@ class ViewController: UIViewController {
     }
 
     @IBAction func amazonLogin(_ sender: Any) {
+        
         DispatchQueue.global().async {
+            let request = AMZNAuthorizeRequest()
+            var verified = false
+            request.scopes = [AMZNProfileScope.profile()]
+            AMZNAuthorizationManager().authorize(request, withHandler: { (authres: AMZNAuthorizeResult?, canceled : Bool, error : Error?) -> () in
+                print("attempting to log in")
+                if(authres != nil) {
+                    print("logged in with amazon!!")
+                    print(authres!.user!.email)
+                    verified = true
+                }
+                else {
+                    print("did not authenticate with amazon!")
+                }
+                } as! AMZNAuthorizationRequestHandler)
             print("theoretically we do verification")
-            let verified = true
+            
             DispatchQueue.main.async {
                 if(verified){
                     let delegate = UIApplication.shared.delegate as! AppDelegate
