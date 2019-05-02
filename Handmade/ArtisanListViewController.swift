@@ -46,6 +46,7 @@ class ArtisanListViewController: UIViewController, UITableViewDelegate, UITableV
     let overlay = UIView()
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("viewDidLoad")
         self.profileImage.image = ArtisanListViewController.resizeImage(image:UIImage(named: "profile.jpg")!, targetSize:CGSize(width:80, height:80))//This needs to be changed later
         overlay.backgroundColor = UIColor(white: 0.5, alpha: 0.5)
         overlay.frame =  self.artisanTableView.frame
@@ -122,7 +123,6 @@ class ArtisanListViewController: UIViewController, UITableViewDelegate, UITableV
         if ((self.delegate.cga) != nil){
             let urlString = "http://capstone406.herokuapp.com/cga/artisans?email="+delegate.cga!.email
             let url = URL(string: urlString)!
-
             print(url)
             let task = URLSession.shared.dataTask(with: url){
                 (data, response, error) -> Void in
@@ -140,6 +140,10 @@ class ArtisanListViewController: UIViewController, UITableViewDelegate, UITableV
                 }
             }
             task.resume()
+        }
+        else {
+            print("error authenticating")
+            self.presentAuthAlert()
         }
 
     }
@@ -206,5 +210,16 @@ class ArtisanListViewController: UIViewController, UITableViewDelegate, UITableV
         UIGraphicsEndImageContext()
         
         return newImage!
+    }
+    func presentAuthAlert() {
+        let alert = UIAlertController(title: "Couldn't Log In", message: "We couldn't log you in with that email.", preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: {(UIAlertAction) -> () in
+            self.logOut()
+        }))
+        //alert.addAction(UIAlertAction(title: "Retry", style: .default, handler: nil))
+        //TODO: add handler for retry
+        
+        self.present(alert, animated: true)
     }
 }

@@ -13,15 +13,30 @@ class ViewController: UIViewController {
     @IBOutlet var amazonLoginButton: UIButton!
     @IBOutlet var createUserButton: UIButton!
     
+    fileprivate func testParseCgaFromJSON() {
+        let delegate = UIApplication.shared.delegate as! AppDelegate
+        delegate.parseCgaFromJSON(data: """
+{
+            "data": {
+            "id": 418,
+            "email": "casato@calpoly.edu",
+            "first_name": "Clay",
+            "last_name": "Asato",
+            "image": "https://capstone406.s3.us-west-1.amazonaws.com/cga/sM2oHeUN8xek6XqsSwlMotLCcMzavjx6UiNDIkklDfteEHZeGAo1l47Fj80mEMBB.jpg"
+        }
+    }
+""".data(using: .utf8)!)
+        print(delegate.cga == nil)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.amazonLoginButton.sizeToFit()
         self.navigationController?.navigationBar.isHidden = true
-        
     }
     
     @IBAction func amazonLogin(_ sender: Any) {
-        
+        let cgaSetGroup = DispatchGroup()
         let request = AMZNAuthorizeRequest()
         var verified = false
         request.scopes = [AMZNProfileScope.profile()]
@@ -34,34 +49,52 @@ class ViewController: UIViewController {
                 DispatchQueue.main.async {
                     if(verified){
                         let delegate = UIApplication.shared.delegate as! AppDelegate
-                        delegate.parseCgaFromJSON(data:
-                            """
-{
-    "email":"test@email.com",
-    "id":1,
-    "imageUrl":"https://scontent-sjc3-1.xx.fbcdn.net/v/t1.0-9/43437519_2116499585051348_1892370819774939136_n.jpg?_nc_cat=104&_nc_ht=scontent-sjc3-1.xx&oh=ed00fc5b5e92ac19027ce76c1623b242&oe=5D744F95",
-    "firstName":"Patrick",
-    "lastName": "Beninga",
-    "payouts":[]
+                        let urlString = "https://capstone406.herokuapp.com/cga?email=" + authres!.user!.email!
                         
-}
-""".data(using: .utf8)!)
-                        self.navigationController?.setViewControllers(
-                            [self.storyboard!.instantiateViewController(withIdentifier: "ArtisanListViewController")],
-                            animated: true)
+                        let session = URLSession(configuration: URLSessionConfiguration.default)
+                        let request = URLRequest(url: URL(string: urlString)!)
+                        let task: URLSessionDataTask = session.dataTask(with: request)
+                        { (receivedData, response, error) -> Void in
+                            
+                            if let data = receivedData {
+                                do {
+                                    print(data)
+                                    print("parsing")
+                                    cgaSetGroup.enter()
+                                    delegate.parseCgaFromJSON(data: data)
+                                    cgaSetGroup.leave()
+                                   /* DispatchQueue.main.sync {
+                                        cgaSetGroup.enter()
+                                        delegate.parseCgaFromJSON(data: data)
+                                        print("parsed cga")
+                                        cgaSetGroup.leave()
+                                    }*/
+                                } catch {
+                                    print("Exception on Decode: \(error)")
+                                }
+                            }
+                        }
+                        task.resume()
+                        
+                            print(delegate.cga == nil)
+                        while(delegate.cga == nil){}
+                            self.navigationController?.setViewControllers(
+                                [self.storyboard!.instantiateViewController(withIdentifier: "ArtisanListViewController")],
+                                animated: true)
+
+                        
                     }
                 }
             }
             else {
                 print("did not authenticate with amazon!")
             }
-            } as! AMZNAuthorizationRequestHandler)
-        print("theoretically we do verification")
+        } )
         
     }
     @IBAction func artisanLogin(_ sender: Any) {
         self.navigationController?.pushViewController(self.storyboard!.instantiateViewController(withIdentifier: "loginVC"), animated: true)
     }
-    
 }
+
 

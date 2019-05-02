@@ -50,13 +50,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let jsonResponse = try JSONSerialization.jsonObject(with:
                 data, options: [])
             print(jsonResponse) //Response resul
-            let json = jsonResponse as! [String:Any]
-            guard let imgURL = json["imageUrl"] as? String else {return}
+            let data = jsonResponse as! [String:Any]
+            let json = data["data"] as! [String:Any]
+            guard let imgURL = json["image"] as? String else {return}
             self.cga = CGA(email: json["email"] as! String,
-                           firstName: json["firstName"] as! String,
-                           lastName: json["lastName"] as! String,
+                           firstName: json["first_name"] as! String,
+                           lastName: json["last_name"] as! String,
                            imageURL: imgURL,
                            image: nil)
+            print("cga is nil: ")
+            print(self.cga == nil)
+            print(self.cga?.email)
+            print(self.cga?.firstName)
+            print(self.cga?.lastName)
         } catch let parsingError {
             print("Error", parsingError)
         }
