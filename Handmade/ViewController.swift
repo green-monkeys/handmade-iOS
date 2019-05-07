@@ -36,8 +36,8 @@ class ViewController: UIViewController {
     }
     
     @IBAction func amazonLogin(_ sender: Any) {
-        let cgaSetGroup = DispatchGroup()
         let request = AMZNAuthorizeRequest()
+        var email : String? = nil
         var verified = false
         request.scopes = [AMZNProfileScope.profile()]
         AMZNAuthorizationManager().authorize(request, withHandler: { (authres: AMZNAuthorizeResult?, canceled : Bool, error : Error?) -> () in
@@ -46,55 +46,46 @@ class ViewController: UIViewController {
                 print("logged in with amazon!!")
                 print(authres!.user!.email)
                 verified = true
-                DispatchQueue.main.async {
-                    if(verified){
-                        let delegate = UIApplication.shared.delegate as! AppDelegate
-                        let urlString = "https://capstone406.herokuapp.com/cga?email=" + authres!.user!.email!
-                        
-                        let session = URLSession(configuration: URLSessionConfiguration.default)
-                        let request = URLRequest(url: URL(string: urlString)!)
-                        let task: URLSessionDataTask = session.dataTask(with: request)
-                        { (receivedData, response, error) -> Void in
-                            
-                            if let data = receivedData {
-                                do {
-                                    print(data)
-                                    print("parsing")
-                                    cgaSetGroup.enter()
-                                    delegate.parseCgaFromJSON(data: data)
-                                    cgaSetGroup.leave()
-                                   /* DispatchQueue.main.sync {
-                                        cgaSetGroup.enter()
-                                        delegate.parseCgaFromJSON(data: data)
-                                        print("parsed cga")
-                                        cgaSetGroup.leave()
-                                    }*/
-                                } catch {
-                                    print("Exception on Decode: \(error)")
-                                }
-                            }
-                        }
-                        task.resume()
-                        
-                            print(delegate.cga == nil)
-                        while(delegate.cga == nil){}
-                            self.navigationController?.setViewControllers(
-                                [self.storyboard!.instantiateViewController(withIdentifier: "ArtisanListViewController")],
-                                animated: true)
+                email = authres!.user!.email
 
-                        
-                    }
-                }
             }
             else {
-                print("did not authenticate with amazon!")
+                self.presentAuthAlert()
             }
         } )
         
+            if(verified){
+                let delegate = UIApplication.shared.delegate as! AppDelegate
+                let urlString = "https://capstone406.herokuapp.com/cga?email=\(email!)"
+                let session = URLSession(configuration: URLSessionConfiguration.default)
+                let request = URLRequest(url: URL(string: urlString)!)
+                let task: URLSessionDataTask = session.dataTask(with: request)
+                { (receivedData, response, error) -> Void in
+                    if let data = receivedData {
+                            print(data)
+                            delegate.parseCgaFromJSON(data: data)
+                            print("parsing")
+                        DispatchQueue.main.sync() {
+                            self.navigationController?.setViewControllers(
+                                [self.storyboard!.instantiateViewController(withIdentifier: "ArtisanListViewController")],
+                                animated: true)
+                        }
+
+                    }
+                }
+                task.resume()
+            }
     }
     @IBAction func artisanLogin(_ sender: Any) {
         self.navigationController?.pushViewController(self.storyboard!.instantiateViewController(withIdentifier: "loginVC"), animated: true)
     }
+    func presentAuthAlert() {
+        let alert = UIAlertController(title: "Couldn't Log In", message: "We couldn't log you in with that email.", preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+        self.present(alert, animated: true)
+    }
 }
+
 
 

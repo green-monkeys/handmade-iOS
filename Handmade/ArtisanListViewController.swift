@@ -44,6 +44,7 @@ class ArtisanListViewController: UIViewController, UITableViewDelegate, UITableV
     var artisans = [Artisan]()
     var delegate = UIApplication.shared.delegate as! AppDelegate
     let overlay = UIView()
+    var fullName: String?
     override func viewDidLoad() {
         super.viewDidLoad()
         print("viewDidLoad")
@@ -66,6 +67,7 @@ class ArtisanListViewController: UIViewController, UITableViewDelegate, UITableV
         self.getArtisans()
         self.artisanTableView.layer.borderWidth = 2
         self.artisanTableView.layer.borderColor = UIColor.white.cgColor
+        self.fullName = "\(delegate.cga?.firstName) \(delegate.cga?.lastName)"
         // Do any additional setup after loading the view.
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -116,7 +118,6 @@ class ArtisanListViewController: UIViewController, UITableViewDelegate, UITableV
         bgView.backgroundColor = self.view.backgroundColor
         cell.selectedBackgroundView = bgView
         print("did an image thing")
-        
         return cell
     }
     func getArtisans(){
@@ -143,7 +144,6 @@ class ArtisanListViewController: UIViewController, UITableViewDelegate, UITableV
         }
         else {
             print("error authenticating")
-            self.presentAuthAlert()
         }
 
     }
@@ -169,6 +169,7 @@ class ArtisanListViewController: UIViewController, UITableViewDelegate, UITableV
                 artisans.append(art)
                 self.fetchImage(imageURL, art)
             }
+            
         }catch let parsingError{
             print("here")
             print("Error", parsingError)
@@ -210,16 +211,5 @@ class ArtisanListViewController: UIViewController, UITableViewDelegate, UITableV
         UIGraphicsEndImageContext()
         
         return newImage!
-    }
-    func presentAuthAlert() {
-        let alert = UIAlertController(title: "Couldn't Log In", message: "We couldn't log you in with that email.", preferredStyle: .alert)
-        
-        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: {(UIAlertAction) -> () in
-            self.logOut()
-        }))
-        //alert.addAction(UIAlertAction(title: "Retry", style: .default, handler: nil))
-        //TODO: add handler for retry
-        
-        self.present(alert, animated: true)
     }
 }

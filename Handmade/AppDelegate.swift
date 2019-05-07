@@ -13,6 +13,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var cga:CGA?
+    var cgaIsSet = false
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -51,7 +52,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 data, options: [])
             print(jsonResponse) //Response resul
             let data = jsonResponse as! [String:Any]
-            let json = data["data"] as! [String:Any]
+            if let json = data["data"] as? [String:Any] {
             guard let imgURL = json["image"] as? String else {return}
             self.cga = CGA(email: json["email"] as! String,
                            firstName: json["first_name"] as! String,
@@ -63,6 +64,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print(self.cga?.email)
             print(self.cga?.firstName)
             print(self.cga?.lastName)
+            }
+            self.cgaIsSet = true
         } catch let parsingError {
             print("Error", parsingError)
         }
