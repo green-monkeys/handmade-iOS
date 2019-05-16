@@ -22,19 +22,36 @@ class Artisan{
     var isSmart:Bool
     var username:String
     var localImage = false
-    init(name:String, imageUrl:String, username:String, phone:String?, isSmart:Bool) {
+    var Id:String?
+    init(name:String, username:String, phone:String?, isSmart:Bool) {
         self.name = name
         self.phone = phone
         self.isSmart = isSmart
         self.username = username
     }
-    init(name:String, imageUrl:String, username:String, phone:String?, isSmart:Bool, localImage:UIImage) {
+    init(name:String, username:String, phone:String?, isSmart:Bool, Id:String) {
+        self.name = name
+        self.phone = phone
+        self.isSmart = isSmart
+        self.username = username
+        self.Id = Id
+    }
+    init(name:String, username:String, phone:String?, isSmart:Bool, localImage:UIImage) {
         self.name = name
         self.phone = phone
         self.isSmart = isSmart
         self.username = username
         self.fullImage = localImage
         self.image = ArtisanListViewController.resizeImage(image: self.fullImage!, targetSize: CGSize(width:50,height:50))
+    }
+    init(name:String, username:String, phone:String?, isSmart:Bool, localImage:UIImage, id:String) {
+        self.name = name
+        self.phone = phone
+        self.isSmart = isSmart
+        self.username = username
+        self.fullImage = localImage
+        self.image = ArtisanListViewController.resizeImage(image: self.fullImage!, targetSize: CGSize(width:50,height:50))
+        self.Id = id
     }
 }
 class ArtisanListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
@@ -47,13 +64,6 @@ class ArtisanListViewController: UIViewController, UITableViewDelegate, UITableV
     override func viewDidLoad() {
         super.viewDidLoad()
         self.profileImage.image = ArtisanListViewController.resizeImage(image:UIImage(named: "profile.jpg")!, targetSize:CGSize(width:80, height:80))//This needs to be changed later
-        overlay.backgroundColor = UIColor(white: 0.5, alpha: 0.5)
-        overlay.frame =  self.artisanTableView.frame
-        self.view.addSubview(overlay)
-        var activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
-        activityIndicator.center = overlay.center
-        overlay.addSubview(activityIndicator)
-        activityIndicator.startAnimating()
         self.profileImage.layer.cornerRadius = 40.0
         self.profileImage.layer.masksToBounds =  true
         self.artisanTableView.delegate =  self
@@ -65,6 +75,13 @@ class ArtisanListViewController: UIViewController, UITableViewDelegate, UITableV
         self.getArtisans()
         self.artisanTableView.layer.borderWidth = 2
         self.artisanTableView.layer.borderColor = UIColor.white.cgColor
+        overlay.backgroundColor = UIColor(white: 0.5, alpha: 0.5)
+        overlay.frame = self.artisanTableView.frame
+        self.view.addSubview(overlay)
+        var activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
+        activityIndicator.center = overlay.center
+        overlay.addSubview(activityIndicator)
+        activityIndicator.startAnimating()
         // Do any additional setup after loading the view.
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -75,9 +92,24 @@ class ArtisanListViewController: UIViewController, UITableViewDelegate, UITableV
         self.artisanTableView.reloadData()
     }
     @objc func logOut (){
-        self.navigationController?.setViewControllers(
-            [self.storyboard!.instantiateViewController(withIdentifier: "rootViewController")],
-            animated: true)
+        DispatchQueue.global().async {
+            AMZNAuthorizationManager().signOut({ (err: Error?) in
+                if(err != nil) {
+                    print(err!)
+                }
+                else {
+                    print("signed out of Amazon")
+                }
+            })
+            //amazon logout stuff
+            DispatchQueue.main.async{
+                self.delegate.cga = nil
+                self.navigationController?.setViewControllers(
+                    [self.storyboard!.instantiateViewController(withIdentifier: "rootViewController")],
+                    animated: true)
+            }
+        }
+        
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.artisans.count;
@@ -105,6 +137,7 @@ class ArtisanListViewController: UIViewController, UITableViewDelegate, UITableV
         return cell
     }
     func getArtisans(){
+        self.artisans = []
         if ((self.delegate.cga) != nil){
             let urlString = "http://capstone406.herokuapp.com/cga/artisans?email="+delegate.cga!.email
             let url = URL(string: urlString)!
@@ -121,13 +154,47 @@ class ArtisanListViewController: UIViewController, UITableViewDelegate, UITableV
                     self.parseArtisans(data: data)
                     print(self.artisans)
                     self.artisanTableView.reloadData()
-                    self.overlay.removeFromSuperview()
-                    self.overlay.subviews[0].removeFromSuperview()
+                    if(self.overlay.superview != nil){
+                        self.overlay.removeFromSuperview()
+                        self.overlay.subviews[0].removeFromSuperview()
+                    }
                 }
             }
             task.resume()
         }
 
+    }
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let deleteTitle = NSLocalizedString("Delete", comment: "Delete action")
+        let deleteAction = UITableViewRowAction(style: .destructive,
+                                                title: deleteTitle) { (action, indexPath) in
+                                                    self.deleteArtisan(row: indexPath.row)
+        }
+        return [deleteAction]
+    }
+    func deleteArtisan(row:Int){
+        let art = self.artisans.remove(at: row)
+        self.artisanTableView.deleteRows(at: [IndexPath(row: row, section: 0)], with: .automatic)
+        let urlString = "http://capstone406.herokuapp.com/artisan/\(art.Id!)"
+        let url = URL(string: urlString)!
+        var request = URLRequest(url: url)
+        request.httpMethod = "Delete"
+        let task = URLSession.shared.dataTask(with: request){
+            (data, response, error) -> Void in
+            if(error != nil){
+                print("OOGA BOOGA WE GOT AN ERROR")
+                print(error)
+                return
+            }
+            DispatchQueue.main.async {
+                guard let data = data else {return}
+                print(String(data: data, encoding: .utf8))
+            }
+        }
+        task.resume()
     }
     func parseArtisans(data:Data){
         do{
@@ -136,20 +203,29 @@ class ArtisanListViewController: UIViewController, UITableViewDelegate, UITableV
             guard let dataJson = jsonResponse as? [String: [[String:Any]]] else {return}
             print(dataJson)
             guard let json = dataJson["data"] else {return}
+            print(json)
             for x in json {
+                print("HEREEEE \(x)")
                 guard let firstName = x["first_name"] as? String else {return}
                 guard let lastName = x["last_name"] as? String else {return}
                 guard let username = x["username"] as? String else {return}
-                let imageURL = "http://capstone406.herokuapp.com/artisan/image?username=" + username
+                let imageURL = x["image"] as? String ?? nil
                 let phone  = x["phone"] as? Int ?? nil
+                let id = x["id"] as? Int
                 var phoneString = ""
+                var IdString = ""
                 if(phone != nil){
                     phoneString = String(phone!)
                 }
+                if(id != nil){
+                    IdString = String(id!)
+                }
                 let isSmart = x["is_smart"] as? Bool ?? false
-                let art = Artisan(name: firstName + " " + lastName , imageUrl: imageURL, username: username, phone:phoneString , isSmart: isSmart)
+                let art = Artisan(name: firstName + " " + lastName, username: username, phone:phoneString , isSmart: isSmart, Id:IdString)
                 artisans.append(art)
-                self.fetchImage(imageURL, art)
+                if(imageURL != nil){
+                    ArtisanListViewController.fetchImage(imageURL!, art, cb:self.artisanTableView.reloadData)
+                }
             }
         }catch let parsingError{
             print("here")
@@ -158,15 +234,15 @@ class ArtisanListViewController: UIViewController, UITableViewDelegate, UITableV
         }
         
     }
-    func fetchImage(_ urlString: String, _ a:Artisan){
+    static func fetchImage(_ urlString: String, _ a:Artisan, cb: @escaping () -> Void){
         print("Download Started")
-        DispatchQueue.global().async { [weak self] in
+        DispatchQueue.global().async {
             let url = URL(string:urlString)!
             if let data  = try? Data(contentsOf: url){
                 DispatchQueue.main.async() {
                     a.fullImage = UIImage(data: data)
                     a.image = ArtisanListViewController.resizeImage(image: a.fullImage!, targetSize: CGSize(width:50,height:50))
-                    self?.artisanTableView.reloadData()
+                    cb()
                 }
             }
         }

@@ -13,12 +13,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var cga:CGA?
+    var artisan:Artisan?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         return true
     }
 
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        return AMZNAuthorizationManager.handleOpen(url, sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as! String)
+    }
+    
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
@@ -40,21 +45,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-    func parseCgaFromJSON(data:Data){
+    func parseCgaFromJSON(data:Data) -> CGA?{
         do{
             //here dataResponse received from a network request
             let jsonResponse = try JSONSerialization.jsonObject(with:
                 data, options: [])
             print(jsonResponse) //Response resul
-            let json = jsonResponse as! [String:Any]
-            guard let imgURL = json["imageUrl"] as? String else {return}
-            self.cga = CGA(email: json["email"] as! String,
-                           firstName: json["firstName"] as! String,
-                           lastName: json["lastName"] as! String,
+            let jsontemp = jsonResponse as! [String: [String:Any]]
+            let json = jsontemp["data"]!
+            let imgURL = json["imageUrl"] as? String ?? ""
+            return CGA(email: json["email"] as! String,
+                           firstName: json["first_name"] as! String,
+                           lastName: json["last_name"] as! String,
+                           Id : String(json["id"] as! Int),
                            imageURL: imgURL,
-                           image: nil)
+                           image: nil
+                        )
         } catch let parsingError {
             print("Error", parsingError)
+            return nil
         }
 
     }

@@ -15,12 +15,14 @@ class CGA: NSObject {
     var imageUrl:String?
     var image:UIImage?
     var name:String
-    init(email:String, firstName:String, lastName:String, imageURL:String? ,image:UIImage?){
+    let id:String
+    init(email:String, firstName:String, lastName:String, Id:String, imageURL:String? ,image:UIImage?){
         self.email = email
         self.firstName = firstName
         self.lastName = lastName
         self.imageUrl = imageURL
         self.image = image
+        self.id = Id
         self.name = firstName + " " + lastName
         
     }

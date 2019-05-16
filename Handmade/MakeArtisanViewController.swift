@@ -94,9 +94,103 @@ class MakeArtisanViewController: UIViewController, UIImagePickerControllerDelega
             self.present(alert, animated: true, completion: nil)
             return
         }
-        presentingVC.artisans.append(Artisan(name: firstName.text! + " " + lastName.text!, imageUrl: "", username: username.text!, phone: phoneNumber.text!, isSmart: self.isSmartSwitch.isOn, localImage:self.selectedImage ?? UIImage(named: "fake_artisan_image")!))
+        let params = [
+            "username" : self.username.text!,
+            "cgaId" : "2",
+            "firstName" : self.firstName.text!,
+            "lastName" : self.lastName.text!,
+            "password" : "hi",
+            "phoneNumber" : self.phoneNumber.text!,
+            "isSmart" : String(self.isSmartSwitch.isOn)
+            ]
+        self.postNewArtisan(params: params)
+        presentingVC.artisans.append(Artisan(name: "\(self.firstName.text!)  \(self.lastName.text!)", username: username.text!, phone: phoneNumber.text!, isSmart: self.isSmartSwitch.isOn, localImage:self.selectedImage ?? UIImage(named: "fake_artisan_image")!))
         self.navigationController?.popViewController(animated: true)
         
+    }
+    func postNewArtisan(params : [String : String]){
+            let urlString = "http://capstone406.herokuapp.com/artisan"
+            let url = URL(string: urlString)!
+            var request = URLRequest(url: url)
+            let boundary = "Boundary-\(UUID().uuidString)"
+            request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+            request.httpMethod = "POST"
+            request.httpBody = createBody(parameters: params,
+                                boundary: boundary,
+                                image: self.selectedImage,
+                                mimeType: "image/jpg",
+                                filename: self.username.text! + ".jpg")
+            print(url)
+            let task = URLSession.shared.dataTask(with: request){
+                (data, response, error) -> Void in
+                if(error != nil){
+                    print("OOGA BOOGA WE GOT AN ERROR")
+                    print(error)
+                    return
+                }
+                DispatchQueue.main.async {
+                    guard let data = data else {return}
+                    do{
+                        print("HEEEREEEEE")
+                        print(String(data: data, encoding: .utf8)!)
+                        let jsonResponse = try JSONSerialization.jsonObject(with:
+                            data, options: [])
+                        guard let dataJson = jsonResponse as? [String: [String:Any]] else {return}
+                        guard let x = dataJson["data"] else {return}
+                        guard let firstName = x["first_name"] as? String else {return}
+                        guard let lastName = x["last_name"] as? String else {return}
+                        guard let username = x["username"] as? String else {return}
+                        guard let imageURL = x["image"] as? String else {return}
+                        let id = x["id"] as? Int
+                        let phone  = x["phone"] as? Int ?? nil
+                        var IdString = ""
+                        if(id != nil){
+                            IdString = String(id!)
+                        }
+                        var phoneString = ""
+                        if(phone != nil){
+                            phoneString = String(phone!)
+                        }
+                        let isSmart = x["is_smart"] as? Bool ?? false
+                        self.presentingVC.artisans.append(Artisan(name: firstName + " " + lastName, username: username, phone: phoneString, isSmart: isSmart, localImage:self.selectedImage ?? UIImage(named: "fake_artisan_image")!, id:IdString))
+                    }catch let parsingError{
+                        print("here")
+                        print("Error", parsingError)
+                        print("here")
+                    }
+
+                    self.navigationController?.popViewController(animated: true)
+                }
+            }
+            task.resume()
+        
+    }
+    func createBody(parameters: [String: String],
+                    boundary: String,
+                    image: UIImage?,
+                    mimeType: String,
+                    filename: String) -> Data {
+        
+        let body = NSMutableData()
+        
+        let boundaryPrefix = "--\(boundary)\r\n"
+        
+        for (key, value) in parameters {
+            body.appendString(boundaryPrefix)
+            body.appendString("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n")
+            body.appendString("\(value)\r\n")
+        }
+        if(image != nil){
+            let data  =  image!.jpegData(compressionQuality: 0.7)!
+            body.appendString(boundaryPrefix)
+            body.appendString("Content-Disposition: form-data; name=\"image\"; filename=\"\(filename)\"\r\n")
+            body.appendString("Content-Type: \(mimeType)\r\n\r\n")
+            body.append(data)
+            body.appendString("\r\n")
+        }
+        body.appendString("--".appending(boundary.appending("--")))
+        print(String(data: body as! Data, encoding: .utf8))
+        return body as Data
     }
     /*
     // MARK: - Navigation
@@ -108,4 +202,10 @@ class MakeArtisanViewController: UIViewController, UIImagePickerControllerDelega
     }
     */
 
+}
+extension NSMutableData {
+    func appendString(_ string: String) {
+        let data = string.data(using: String.Encoding.utf8, allowLossyConversion: false)
+        append(data!)
+    }
 }
