@@ -7,9 +7,14 @@
 //
 
 import UIKit
+import MessageUI
 
-class ArtisanViewController: UIViewController {
-    @IBOutlet var phoneNumber: UILabel!
+class ArtisanViewController: UIViewController, MFMessageComposeViewControllerDelegate {
+    func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
+        controller.dismiss(animated: true, completion: nil)
+        
+    }
+    @IBOutlet var phoneNumber: UIButton!
     @IBOutlet var email: UILabel!
     @IBOutlet var profilePicture: UIImageView!
     @IBOutlet var name: UILabel!
@@ -24,11 +29,35 @@ class ArtisanViewController: UIViewController {
         self.profilePicture.layer.masksToBounds =  true
         self.email.text = self.artisan.username
         self.name.text = self.artisan.name
-        self.phoneNumber.text = self.artisan.phone
-        self.phoneNumber.text! += self.artisan.isSmart ? " (Smart)" : ""
+        self.phoneNumber.setTitle("\(self.artisan.phone ?? "None") \(self.artisan.isSmart ? " (Smart)" : "")", for: .normal)
     }
     
+    @IBAction func goToText(_ sender: Any) {
+        if(self.artisan.phone == nil){
+            return
+        }
+        if !MFMessageComposeViewController.canSendText() {
+            print("SMS services are not available")
+            return
+        }
+        let composeVC = MFMessageComposeViewController()
+        composeVC.messageComposeDelegate = self
 
+
+        // Configure the fields of the interface.
+        composeVC.recipients = [self.artisan.phone ?? ""]
+        
+        // Present the view controller modally.
+        self.present(composeVC, animated: true, completion: nil)
+    }
+    
+    @IBAction func toPayouts(_ sender: Any) {
+        let delegate = UIApplication.shared.delegate as! AppDelegate
+        let payoutTVC = self.storyboard?.instantiateViewController(withIdentifier: "payoutVC") as! PayoutTableViewController
+        payoutTVC.artisan = self.artisan
+        self.navigationController?.pushViewController(payoutTVC, animated:  true)
+        
+    }
     /*
     // MARK: - Navigation
 

@@ -7,8 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6F3A72AE226FB8AD00AAA3CA /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F3A72AD226FB8AD00AAA3CA /* Security.framework */; };
+		6F3A72B0226FB8B200AAA3CA /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F3A72AF226FB8B200AAA3CA /* SafariServices.framework */; };
+		6FB0D775226E99F100C88EEE /* LoginWithAmazon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FB0D774226E99F100C88EEE /* LoginWithAmazon.framework */; };
+		6FB0D776226E99F100C88EEE /* LoginWithAmazon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FB0D774226E99F100C88EEE /* LoginWithAmazon.framework */; };
+		6FB0D777226E99F100C88EEE /* LoginWithAmazon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FB0D774226E99F100C88EEE /* LoginWithAmazon.framework */; };
 		CD727F4B2267CEB800DAA886 /* fake_artisan_image.png in Resources */ = {isa = PBXBuildFile; fileRef = CD727F4A2267CEB800DAA886 /* fake_artisan_image.png */; };
 		CD727F4D2267F56300DAA886 /* CGA.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD727F4C2267F56300DAA886 /* CGA.swift */; };
+		CD88639A2284BAE600500A46 /* NewArtisanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8863992284BAE600500A46 /* NewArtisanViewController.swift */; };
 		CD95A79B2256AFF9008A6583 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD95A79A2256AFF9008A6583 /* AppDelegate.swift */; };
 		CD95A79D2256AFF9008A6583 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD95A79C2256AFF9008A6583 /* ViewController.swift */; };
 		CD95A7A02256AFF9008A6583 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CD95A79E2256AFF9008A6583 /* Main.storyboard */; };
@@ -21,6 +27,7 @@
 		CD95A7D422665DCD008A6583 /* MakeArtisanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD95A7D322665DCD008A6583 /* MakeArtisanViewController.swift */; };
 		CD95A7D72266651E008A6583 /* ArtisanListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD95A7D62266651E008A6583 /* ArtisanListViewController.swift */; };
 		CD95A7D922666934008A6583 /* profile.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CD95A7D822666934008A6583 /* profile.jpg */; };
+		CDD90B0E228D2E7800295372 /* PayoutTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD90B0D228D2E7800295372 /* PayoutTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,8 +48,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6F3A72AD226FB8AD00AAA3CA /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		6F3A72AF226FB8B200AAA3CA /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
+		6F3A72B12271286C00AAA3CA /* Handmade-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Handmade-Bridging-Header.h"; sourceTree = "<group>"; };
+		6FB0D774226E99F100C88EEE /* LoginWithAmazon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = LoginWithAmazon.framework; sourceTree = "<group>"; };
 		CD727F4A2267CEB800DAA886 /* fake_artisan_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fake_artisan_image.png; sourceTree = "<group>"; };
 		CD727F4C2267F56300DAA886 /* CGA.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGA.swift; sourceTree = "<group>"; };
+		CD8863992284BAE600500A46 /* NewArtisanViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewArtisanViewController.swift; sourceTree = "<group>"; };
 		CD95A7972256AFF9008A6583 /* Handmade.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Handmade.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD95A79A2256AFF9008A6583 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CD95A79C2256AFF9008A6583 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -62,6 +74,7 @@
 		CD95A7D522666238008A6583 /* btnlwa_gold_loginwithamazon_pressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btnlwa_gold_loginwithamazon_pressed.png; sourceTree = "<group>"; };
 		CD95A7D62266651E008A6583 /* ArtisanListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtisanListViewController.swift; sourceTree = "<group>"; };
 		CD95A7D822666934008A6583 /* profile.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = profile.jpg; sourceTree = "<group>"; };
+		CDD90B0D228D2E7800295372 /* PayoutTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayoutTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +82,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6F3A72B0226FB8B200AAA3CA /* SafariServices.framework in Frameworks */,
+				6F3A72AE226FB8AD00AAA3CA /* Security.framework in Frameworks */,
+				6FB0D775226E99F100C88EEE /* LoginWithAmazon.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -76,6 +92,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6FB0D776226E99F100C88EEE /* LoginWithAmazon.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,15 +100,27 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6FB0D777226E99F100C88EEE /* LoginWithAmazon.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6FB0D773226E99AD00C88EEE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6F3A72AF226FB8B200AAA3CA /* SafariServices.framework */,
+				6F3A72AD226FB8AD00AAA3CA /* Security.framework */,
+				6FB0D774226E99F100C88EEE /* LoginWithAmazon.framework */,
+			);
+			path = Frameworks;
+			sourceTree = "<group>";
+		};
 		CD95A78E2256AFF9008A6583 = {
 			isa = PBXGroup;
 			children = (
+				6FB0D773226E99AD00C88EEE /* Frameworks */,
 				CD95A7992256AFF9008A6583 /* Handmade */,
 				CD95A7AE2256AFFA008A6583 /* HandmadeTests */,
 				CD95A7B92256AFFA008A6583 /* HandmadeUITests */,
@@ -124,8 +153,11 @@
 				CD95A7CF225FDF26008A6583 /* ArtisanViewController.swift */,
 				CD95A7D122665DB9008A6583 /* LoginViewController.swift */,
 				CD95A7D322665DCD008A6583 /* MakeArtisanViewController.swift */,
+				CD8863992284BAE600500A46 /* NewArtisanViewController.swift */,
 				CD95A7D62266651E008A6583 /* ArtisanListViewController.swift */,
 				CD727F4C2267F56300DAA886 /* CGA.swift */,
+				6F3A72B12271286C00AAA3CA /* Handmade-Bridging-Header.h */,
+				CDD90B0D228D2E7800295372 /* PayoutTableViewController.swift */,
 			);
 			path = Handmade;
 			sourceTree = "<group>";
@@ -216,6 +248,7 @@
 				TargetAttributes = {
 					CD95A7962256AFF9008A6583 = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1020;
 					};
 					CD95A7AA2256AFFA008A6583 = {
 						CreatedOnToolsVersion = 10.1;
@@ -285,8 +318,10 @@
 				CD95A79D2256AFF9008A6583 /* ViewController.swift in Sources */,
 				CD95A7D422665DCD008A6583 /* MakeArtisanViewController.swift in Sources */,
 				CD95A7D0225FDF26008A6583 /* ArtisanViewController.swift in Sources */,
+				CD88639A2284BAE600500A46 /* NewArtisanViewController.swift in Sources */,
 				CD95A79B2256AFF9008A6583 /* AppDelegate.swift in Sources */,
 				CD95A7D72266651E008A6583 /* ArtisanListViewController.swift in Sources */,
+				CDD90B0E228D2E7800295372 /* PayoutTableViewController.swift in Sources */,
 				CD727F4D2267F56300DAA886 /* CGA.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -462,8 +497,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UW43L4RC6S;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Frameworks",
+				);
 				INFOPLIST_FILE = Handmade/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -471,6 +511,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.Beninga.Handmade;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Handmade/Handmade-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -480,8 +522,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UW43L4RC6S;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Frameworks",
+				);
 				INFOPLIST_FILE = Handmade/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -489,6 +536,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.Beninga.Handmade;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Handmade/Handmade-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -501,6 +549,10 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UW43L4RC6S;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Frameworks",
+				);
 				INFOPLIST_FILE = HandmadeTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -522,6 +574,10 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UW43L4RC6S;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Frameworks",
+				);
 				INFOPLIST_FILE = HandmadeTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -542,6 +598,10 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UW43L4RC6S;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Frameworks",
+				);
 				INFOPLIST_FILE = HandmadeUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -562,6 +622,10 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UW43L4RC6S;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Frameworks",
+				);
 				INFOPLIST_FILE = HandmadeUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
