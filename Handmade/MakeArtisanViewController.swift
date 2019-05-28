@@ -18,9 +18,11 @@ class MakeArtisanViewController: UIViewController, UIImagePickerControllerDelega
     var presentingVC:ArtisanListViewController!
     var selectedImage:UIImage?
     @IBOutlet var isSmartSwitch: UISwitch!
+    var delegate: AppDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.delegate = UIApplication.shared.delegate as? AppDelegate
         self.addImageButton.setImage(ArtisanListViewController.resizeImage(image: UIImage(named: "fake_artisan_image")!, targetSize: CGSize(width:80,height:80)), for: .normal)
         self.addImageButton.imageView!.layer.cornerRadius = 40
         self.addImageButton.imageView!.layer.masksToBounds = true
@@ -96,7 +98,7 @@ class MakeArtisanViewController: UIViewController, UIImagePickerControllerDelega
         }
         let params = [
             "username" : self.username.text!,
-            "cgaId" : "2",
+            "cgaId" : self.delegate!.cga!.id,
             "firstName" : self.firstName.text!,
             "lastName" : self.lastName.text!,
             "password" : "hi",
@@ -104,7 +106,7 @@ class MakeArtisanViewController: UIViewController, UIImagePickerControllerDelega
             "isSmart" : String(self.isSmartSwitch.isOn)
             ]
         self.postNewArtisan(params: params)
-        presentingVC.artisans.append(Artisan(name: "\(self.firstName.text!)  \(self.lastName.text!)", username: username.text!, phone: phoneNumber.text!, isSmart: self.isSmartSwitch.isOn, localImage:self.selectedImage ?? UIImage(named: "fake_artisan_image")!))
+        //presentingVC.artisans.append(Artisan(name: "\(self.firstName.text!)  \(self.lastName.text!)", username: username.text!, phone: phoneNumber.text!, isSmart: self.isSmartSwitch.isOn, localImage:self.selectedImage ?? UIImage(named: "fake_artisan_image")!))
         self.navigationController?.popViewController(animated: true)
         
     }

@@ -16,6 +16,7 @@ class LoginViewController: UIViewController {
     var overlay = UIView()
     override func viewDidLoad() {
         super.viewDidLoad()
+        password.isSecureTextEntry = true
         self.delegate = UIApplication.shared.delegate as! AppDelegate
         self.navigationController?.navigationBar.isHidden = false
         overlay.backgroundColor = UIColor(white: 0.5, alpha: 0.5)
