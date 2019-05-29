@@ -87,6 +87,7 @@ class PayoutTableViewController: UIViewController, UITableViewDataSource, UITabl
                     for payout in payouts{
                         let paid = (payout["paid"] as! Bool)
                         self.payouts.append(Payout(paid, payout["t"] as! String, self.delegate!.cga?.name ?? "Patrick Beninga", self.artisan.name, "$" + String(describing:  payout["amount"]!), id: payout["id"]! as! Int))
+                        print()
                     }
                     self.overlay.isHidden = true
                     self.tableView.reloadData()
@@ -202,7 +203,7 @@ class PayoutTableViewController: UIViewController, UITableViewDataSource, UITabl
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "payoutCell") as! PayoutTableViewCell
         cell.paidLabel.text = payouts[indexPath.row].paid ? "Paid" : "Unpaid"
-        cell.dateLabel.text = payouts[indexPath.row].time
+        cell.dateLabel.text = convertToReadableDate(date: getDateFromString(dateStr: (payouts[indexPath.row].time)) ?? Date())
         cell.whoLabel.text = payouts[indexPath.row].cga
         cell.amountLabel.text = payouts[indexPath.row].amount
         return cell
@@ -213,6 +214,22 @@ class PayoutTableViewController: UIViewController, UITableViewDataSource, UITabl
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.payouts.count
+    }
+    
+    func convertToReadableDate(date: Date) -> String {
+        let df: DateFormatter = DateFormatter()
+        df.dateStyle = DateFormatter.Style.short
+        df.timeStyle = DateFormatter.Style.medium
+        return df.string(from: date)
+        
+    }
+
+    func getDateFromString(dateStr: String) -> Date? {
+        let df = DateFormatter()
+        df.dateFormat = "yy-MM-dd'T'HH:mm:ss.SSSZ"
+        let result = df.date(from: dateStr)
+        print(result)
+        return result
     }
 
     /*
