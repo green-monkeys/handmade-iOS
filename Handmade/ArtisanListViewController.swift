@@ -219,7 +219,11 @@ class ArtisanListViewController: UIViewController, UITableViewDelegate, UITableV
                 guard let lastName = x["last_name"] as? String else {return}
                 guard let username = x["username"] as? String else {return}
                 let imageURL = x["image"] as? String ?? nil
-                let phone  = x["phone"] as? Int ?? nil
+                let phone  = x["phone"] as? String ?? nil
+                print("this is the phone number:")
+                print (phone?.description)
+                print(x["phone"])
+                
                 let id = x["id"] as? Int
                 var phoneString = ""
                 var IdString = ""

@@ -145,6 +145,8 @@ class MakeArtisanViewController: UIViewController, UIImagePickerControllerDelega
                         guard let imageURL = x["image"] as? String else {return}
                         let id = x["id"] as? Int
                         let phone  = x["phone"] as? Int ?? nil
+                        print("phone number in server response: ")
+                        print((x["phone"] as? Int)?.description)
                         var IdString = ""
                         if(id != nil){
                             IdString = String(id!)

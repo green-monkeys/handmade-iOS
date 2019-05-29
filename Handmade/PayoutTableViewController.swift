@@ -204,7 +204,7 @@ class PayoutTableViewController: UIViewController, UITableViewDataSource, UITabl
         let cell = tableView.dequeueReusableCell(withIdentifier: "payoutCell") as! PayoutTableViewCell
         cell.paidLabel.text = payouts[indexPath.row].paid ? "Paid" : "Unpaid"
         cell.dateLabel.text = convertToReadableDate(date: getDateFromString(dateStr: (payouts[indexPath.row].time)) ?? Date())
-        cell.whoLabel.text = payouts[indexPath.row].cga
+        cell.whoLabel.text = "Paid by: " + payouts[indexPath.row].cga
         cell.amountLabel.text = payouts[indexPath.row].amount
         return cell
     }
