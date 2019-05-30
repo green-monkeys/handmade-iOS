@@ -118,7 +118,7 @@ class NewArtisanViewController: UIViewController, UIImagePickerControllerDelegat
                 self.present(alert, animated: true, completion: nil)
                 return
             }
-            DispatchQueue.main.async {
+            DispatchQueue.main.sync {
                 guard let data = data else {return}
                 guard let cga  = (UIApplication.shared.delegate as! AppDelegate).parseCgaFromJSON(data: data) else {
                     let alert = UIAlertController(title: "Alert", message: "No CGA with that email", preferredStyle: .alert)
@@ -170,7 +170,7 @@ class NewArtisanViewController: UIViewController, UIImagePickerControllerDelegat
                 print(error)
                 return
             }
-            DispatchQueue.main.async {
+            DispatchQueue.main.sync {
                 guard let data = data else {return}
                 do{
                     print("HEEEREEEEE")

@@ -56,13 +56,16 @@ class Artisan{
 }
 class ArtisanListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    @IBOutlet weak var cgaName: UILabel!
     @IBOutlet var artisanTableView: UITableView!
     @IBOutlet var profileImage: UIImageView!
     var artisans = [Artisan]()
     var delegate = UIApplication.shared.delegate as! AppDelegate
     let overlay = UIView()
     override func viewDidLoad() {
+        print("view did load")
         super.viewDidLoad()
+        self.cgaName.text = "\(delegate.cga!.firstName) \(delegate.cga!.lastName)"
         self.profileImage.image = ArtisanListViewController.resizeImage(image:UIImage(named: "profile.jpg")!, targetSize:CGSize(width:80, height:80))//This needs to be changed later
         self.profileImage.layer.cornerRadius = 40.0
         self.profileImage.layer.masksToBounds =  true
@@ -72,19 +75,23 @@ class ArtisanListViewController: UIViewController, UITableViewDelegate, UITableV
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Log out", style: .plain, target: self, action: #selector(logOut))
         self.navigationController?.navigationBar.isHidden = false
         self.navigationItem.title = "Artisans"
-        self.getArtisans()
+        //self.getArtisans()
         self.artisanTableView.layer.borderWidth = 2
         self.artisanTableView.layer.borderColor = UIColor.white.cgColor
         overlay.backgroundColor = UIColor(white: 0.5, alpha: 0.5)
         overlay.frame = self.artisanTableView.frame
+        overlay.center = self.artisanTableView.center
         self.view.addSubview(overlay)
         var activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
+        overlay.center = view.center
         activityIndicator.center = overlay.center
         overlay.addSubview(activityIndicator)
         activityIndicator.startAnimating()
         // Do any additional setup after loading the view.
     }
     override func viewWillAppear(_ animated: Bool) {
+        print("view will appear")
+        self.getArtisans()
         super.viewWillAppear(animated)
         if let selectionIndexPath = self.artisanTableView.indexPathForSelectedRow {
             self.artisanTableView.deselectRow(at: selectionIndexPath, animated: animated)
@@ -137,6 +144,8 @@ class ArtisanListViewController: UIViewController, UITableViewDelegate, UITableV
         return cell
     }
     func getArtisans(){
+        print("getting artisans...")
+        print(self.delegate.cga)
         self.artisans = []
         if ((self.delegate.cga) != nil){
             let urlString = "http://capstone406.herokuapp.com/cga/artisans?email="+delegate.cga!.email
@@ -210,7 +219,11 @@ class ArtisanListViewController: UIViewController, UITableViewDelegate, UITableV
                 guard let lastName = x["last_name"] as? String else {return}
                 guard let username = x["username"] as? String else {return}
                 let imageURL = x["image"] as? String ?? nil
-                let phone  = x["phone"] as? Int ?? nil
+                let phone  = x["phone"] as? String ?? nil
+                print("this is the phone number:")
+                print (phone?.description)
+                print(x["phone"])
+                
                 let id = x["id"] as? Int
                 var phoneString = ""
                 var IdString = ""

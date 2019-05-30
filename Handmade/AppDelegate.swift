@@ -47,20 +47,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     func parseCgaFromJSON(data:Data) -> CGA?{
         do{
+            print("starting CGA parse")
+            print(data.description)
             //here dataResponse received from a network request
             let jsonResponse = try JSONSerialization.jsonObject(with:
                 data, options: [])
             print(jsonResponse) //Response resul
-            let jsontemp = jsonResponse as! [String: [String:Any]]
-            let json = jsontemp["data"]!
+            let jsontemp = jsonResponse as? [String: [String:Any]] ?? nil
+            if(jsontemp == nil) {
+                print("something went wrong here")
+                return nil
+            }
+            else {
+            let json = jsontemp!["data"]!
             let imgURL = json["imageUrl"] as? String ?? ""
-            return CGA(email: json["email"] as! String,
+            
+            let cgaRes = CGA(email: json["email"] as! String,
                            firstName: json["first_name"] as! String,
                            lastName: json["last_name"] as! String,
                            Id : String(json["id"] as! Int),
                            imageURL: imgURL,
                            image: nil
                         )
+            cga = cgaRes
+            print("parsed CGA")
+            return cgaRes
+            }
         } catch let parsingError {
             print("Error", parsingError)
             return nil

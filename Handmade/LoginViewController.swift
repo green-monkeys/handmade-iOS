@@ -16,6 +16,7 @@ class LoginViewController: UIViewController {
     var overlay = UIView()
     override func viewDidLoad() {
         super.viewDidLoad()
+        password.isSecureTextEntry = true
         self.delegate = UIApplication.shared.delegate as! AppDelegate
         self.navigationController?.navigationBar.isHidden = false
         overlay.backgroundColor = UIColor(white: 0.5, alpha: 0.5)
@@ -45,7 +46,7 @@ class LoginViewController: UIViewController {
                 print(error)
                 return
             }
-            DispatchQueue.main.async {
+            DispatchQueue.main.sync {
                 guard let data = data else {
                     let alert = UIAlertController(title: "Alert", message: "Invalid Artisan login", preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
