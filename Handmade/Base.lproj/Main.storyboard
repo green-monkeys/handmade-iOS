@@ -74,12 +74,17 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="Homepage" translatesAutoresizingMaskIntoConstraints="NO" id="K7n-pc-cbh">
                                 <rect key="frame" x="0.0" y="64" width="375" height="115"/>
                             </imageView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="rhc-Om-85H">
+                                <rect key="frame" x="305" y="294.5" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" red="0.4041999876499176" green="0.73713392019271851" blue="0.72965496778488159" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
+                            <constraint firstItem="rhc-Om-85H" firstAttribute="leading" secondItem="x9S-wB-2fl" secondAttribute="trailing" constant="14" id="3HY-Rf-bGG"/>
                             <constraint firstItem="K7n-pc-cbh" firstAttribute="centerX" secondItem="g99-eS-nDb" secondAttribute="centerX" id="QNp-EV-j9n"/>
                             <constraint firstItem="Ism-L9-5l7" firstAttribute="centerY" secondItem="g99-eS-nDb" secondAttribute="centerY" id="Rnu-fN-5lk"/>
                             <constraint firstItem="Ism-L9-5l7" firstAttribute="centerX" secondItem="g99-eS-nDb" secondAttribute="centerX" id="SGM-uP-tsk"/>
+                            <constraint firstItem="rhc-Om-85H" firstAttribute="centerY" secondItem="x9S-wB-2fl" secondAttribute="centerY" id="mdp-Sx-ckq"/>
                             <constraint firstItem="Ism-L9-5l7" firstAttribute="top" secondItem="K7n-pc-cbh" secondAttribute="bottom" constant="33.5" id="rNR-si-SAB"/>
                             <constraint firstItem="K7n-pc-cbh" firstAttribute="top" secondItem="g99-eS-nDb" secondAttribute="top" id="vER-uk-fKa"/>
                         </constraints>
@@ -89,6 +94,7 @@
                     <connections>
                         <outlet property="amazonLoginButton" destination="x9S-wB-2fl" id="DKM-Ia-zXM"/>
                         <outlet property="createUserButton" destination="dZi-fz-azz" id="I3U-1t-acS"/>
+                        <outlet property="lwaIndicator" destination="rhc-Om-85H" id="1pC-ei-kCK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="coa-4f-PfW" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -180,17 +186,23 @@
                                     <constraint firstItem="wBO-g9-SK9" firstAttribute="width" secondItem="73e-KQ-txK" secondAttribute="width" id="GKe-bq-eYd"/>
                                 </constraints>
                             </stackView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="zv3-5p-pWh">
+                                <rect key="frame" x="177" y="384" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" red="0.40419998759999998" green="0.73713392020000001" blue="0.72965496780000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
+                            <constraint firstItem="zv3-5p-pWh" firstAttribute="centerX" secondItem="DKH-br-hCF" secondAttribute="centerX" id="MSt-C1-SrW"/>
                             <constraint firstItem="73e-KQ-txK" firstAttribute="width" relation="lessThanOrEqual" secondItem="CoA-Jo-qhD" secondAttribute="width" constant="-20" id="RBU-He-Ihv"/>
                             <constraint firstItem="73e-KQ-txK" firstAttribute="centerX" secondItem="CoA-Jo-qhD" secondAttribute="centerX" id="awm-dU-LT3"/>
                             <constraint firstItem="73e-KQ-txK" firstAttribute="top" secondItem="CoA-Jo-qhD" secondAttribute="top" constant="50" id="hE3-mc-fmj"/>
                             <constraint firstItem="CoA-Jo-qhD" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="73e-KQ-txK" secondAttribute="bottom" id="ihw-Dv-lHZ"/>
+                            <constraint firstItem="zv3-5p-pWh" firstAttribute="top" secondItem="DKH-br-hCF" secondAttribute="bottom" constant="8" id="ugb-p5-x5m"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="CoA-Jo-qhD"/>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="zv3-5p-pWh" id="x6V-pp-pfV"/>
                         <outlet property="addImageButton" destination="HWs-tY-m9R" id="7Yn-me-bgq"/>
                         <outlet property="firstName" destination="AZk-Ln-oqk" id="c0S-yg-pOc"/>
                         <outlet property="isSmartSwitch" destination="M3k-H0-mG8" id="SMC-Os-QnW"/>
@@ -506,7 +518,7 @@
                                                     </subviews>
                                                     <constraints>
                                                         <constraint firstItem="Phn-dP-W0c" firstAttribute="height" secondItem="v5H-S5-h6L" secondAttribute="height" id="jL4-05-Ef1"/>
-                                                        <constraint firstItem="Phn-dP-W0c" firstAttribute="leading" secondItem="v5H-S5-h6L" secondAttribute="leading" id="pzx-bm-RSJ"/>
+                                                        <constraint firstItem="Phn-dP-W0c" firstAttribute="leading" secondItem="v5H-S5-h6L" secondAttribute="leading" constant="20" symbolic="YES" id="pzx-bm-RSJ"/>
                                                         <constraint firstItem="Phn-dP-W0c" firstAttribute="centerY" secondItem="v5H-S5-h6L" secondAttribute="centerY" id="y6H-o2-co3"/>
                                                     </constraints>
                                                 </stackView>
@@ -515,6 +527,7 @@
                                             <color key="tintColor" red="0.40419998759999998" green="0.73713392020000001" blue="0.72965496780000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                             <constraints>
                                                 <constraint firstItem="v5H-S5-h6L" firstAttribute="centerY" secondItem="NXh-CO-e2z" secondAttribute="centerY" id="0DQ-cu-JuE"/>
+                                                <constraint firstAttribute="trailing" secondItem="fk3-CU-mT0" secondAttribute="trailing" constant="15" id="JoM-RV-Emx"/>
                                                 <constraint firstItem="v5H-S5-h6L" firstAttribute="centerX" secondItem="NXh-CO-e2z" secondAttribute="centerX" id="PLL-wx-l9g"/>
                                                 <constraint firstItem="v5H-S5-h6L" firstAttribute="width" secondItem="NXh-CO-e2z" secondAttribute="width" id="QDD-Rt-XtM"/>
                                                 <constraint firstItem="v5H-S5-h6L" firstAttribute="height" relation="lessThanOrEqual" secondItem="NXh-CO-e2z" secondAttribute="height" constant="10" id="egC-VC-tml"/>

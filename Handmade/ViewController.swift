@@ -10,6 +10,7 @@ import UIKit
 import LoginWithAmazon
 
 class ViewController: UIViewController {
+    @IBOutlet weak var lwaIndicator: UIActivityIndicatorView!
     @IBOutlet var amazonLoginButton: UIButton!
     @IBOutlet var createUserButton: UIButton!
     var debug = true
@@ -18,6 +19,7 @@ class ViewController: UIViewController {
         self.amazonLoginButton.sizeToFit()
     }
     override func viewWillAppear(_ animated: Bool) {
+        self.lwaIndicator.isHidden = true
         self.navigationController?.navigationBar.isHidden = true
     }
 
@@ -33,6 +35,7 @@ class ViewController: UIViewController {
                     print(data)
                     delegate.parseCgaFromJSON(data: data)
                     print("parsing")
+
                     DispatchQueue.main.sync() {
                         self.navigationController?.setViewControllers(
                             [self.storyboard!.instantiateViewController(withIdentifier: "ArtisanListViewController")],
@@ -42,12 +45,15 @@ class ViewController: UIViewController {
                 }
             }
             task.resume()
+            self.lwaIndicator.stopAnimating()
+            self.lwaIndicator.isHidden = true
             
         }
     }
     
     @IBAction func amazonLogin(_ sender: Any) {
-        
+        self.lwaIndicator.isHidden = false
+        self.lwaIndicator.startAnimating()
         let request = AMZNAuthorizeRequest()
         var email: String?
         var verified = false

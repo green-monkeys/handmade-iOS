@@ -10,6 +10,7 @@ import UIKit
 
 class MakeArtisanViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
 
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet var phoneNumber: UITextField!
     @IBOutlet var lastName: UITextField!
     @IBOutlet var addImageButton: UIButton!
@@ -22,6 +23,7 @@ class MakeArtisanViewController: UIViewController, UIImagePickerControllerDelega
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        activityIndicator.isHidden = true
         self.delegate = UIApplication.shared.delegate as? AppDelegate
         self.addImageButton.setImage(ArtisanListViewController.resizeImage(image: UIImage(named: "fake_artisan_image")!, targetSize: CGSize(width:80,height:80)), for: .normal)
         self.addImageButton.imageView!.layer.cornerRadius = 40
@@ -72,6 +74,8 @@ class MakeArtisanViewController: UIViewController, UIImagePickerControllerDelega
 
     }
     @IBAction func submitButtonPressed(_ sender: Any) {
+        self.activityIndicator.isHidden = false
+        self.activityIndicator.startAnimating()
         var msg = ""
         if(self.firstName.text?.count == 0){
             msg +=  "Please enter your first name\n"
@@ -94,6 +98,7 @@ class MakeArtisanViewController: UIViewController, UIImagePickerControllerDelega
                     print("destructive")
                 }}))
             self.present(alert, animated: true, completion: nil)
+            self.activityIndicator.isHidden = true
             return
         }
         let params = [
@@ -106,8 +111,8 @@ class MakeArtisanViewController: UIViewController, UIImagePickerControllerDelega
             "isSmart" : String(self.isSmartSwitch.isOn)
             ]
         self.postNewArtisan(params: params)
-        //presentingVC.artisans.append(Artisan(name: "\(self.firstName.text!)  \(self.lastName.text!)", username: username.text!, phone: phoneNumber.text!, isSmart: self.isSmartSwitch.isOn, localImage:self.selectedImage ?? UIImage(named: "fake_artisan_image")!))
-        self.navigationController?.popViewController(animated: true)
+        presentingVC.artisans.append(Artisan(name: "\(self.firstName.text!)  \(self.lastName.text!)", username: username.text!, phone: phoneNumber.text!, isSmart: self.isSmartSwitch.isOn, localImage:self.selectedImage ?? UIImage(named: "fake_artisan_image")!))
+        //self.navigationController?.popViewController(animated: true)
         
     }
     func postNewArtisan(params : [String : String]){
@@ -130,7 +135,7 @@ class MakeArtisanViewController: UIViewController, UIImagePickerControllerDelega
                     print(error)
                     return
                 }
-                DispatchQueue.main.async {
+                DispatchQueue.main.sync {
                     guard let data = data else {return}
                     do{
                         print("HEEEREEEEE")
@@ -157,16 +162,20 @@ class MakeArtisanViewController: UIViewController, UIImagePickerControllerDelega
                         }
                         let isSmart = x["is_smart"] as? Bool ?? false
                         self.presentingVC.artisans.append(Artisan(name: firstName + " " + lastName, username: username, phone: phoneString, isSmart: isSmart, localImage:self.selectedImage ?? UIImage(named: "fake_artisan_image")!, id:IdString))
+                        self.navigationController?.popViewController(animated: true)
+
                     }catch let parsingError{
                         print("here")
                         print("Error", parsingError)
                         print("here")
                     }
-
-                    self.navigationController?.popViewController(animated: true)
+//
                 }
+
             }
             task.resume()
+        self.activityIndicator.isHidden = true
+        self.activityIndicator.stopAnimating()
         
     }
     func createBody(parameters: [String: String],

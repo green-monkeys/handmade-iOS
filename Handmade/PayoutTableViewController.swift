@@ -203,8 +203,10 @@ class PayoutTableViewController: UIViewController, UITableViewDataSource, UITabl
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "payoutCell") as! PayoutTableViewCell
         cell.paidLabel.text = payouts[indexPath.row].paid ? "Paid" : "Unpaid"
+        cell.paidLabel.textColor = payouts[indexPath.row].paid ? .white : .red
+        cell.paidLabel.font = payouts[indexPath.row].paid ? UIFont.systemFont(ofSize: 17.0) : UIFont.boldSystemFont(ofSize: 22.0)
         cell.dateLabel.text = convertToReadableDate(date: getDateFromString(dateStr: (payouts[indexPath.row].time)) ?? Date())
-        cell.whoLabel.text = "Paid by: " + payouts[indexPath.row].cga
+        cell.whoLabel.text = "CGA: " + payouts[indexPath.row].cga
         cell.amountLabel.text = payouts[indexPath.row].amount
         return cell
     }

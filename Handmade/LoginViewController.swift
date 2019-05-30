@@ -46,7 +46,7 @@ class LoginViewController: UIViewController {
                 print(error)
                 return
             }
-            DispatchQueue.main.async {
+            DispatchQueue.main.sync {
                 guard let data = data else {
                     let alert = UIAlertController(title: "Alert", message: "Invalid Artisan login", preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
