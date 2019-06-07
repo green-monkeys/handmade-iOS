@@ -8,14 +8,18 @@
 
 import UIKit
 
-class LoginViewController: UIViewController {
-
+class LoginViewController: UIViewController,UITextFieldDelegate{
+    
     @IBOutlet var username: UITextField!
     @IBOutlet var password: UITextField!
     var delegate:AppDelegate!
     var overlay = UIView()
     override func viewDidLoad() {
         super.viewDidLoad()
+        username.delegate = self
+        password.delegate = self
+        addDoneButtonOnKeyboard()
+        
         password.isSecureTextEntry = true
         self.delegate = UIApplication.shared.delegate as! AppDelegate
         self.navigationController?.navigationBar.isHidden = false
@@ -28,8 +32,32 @@ class LoginViewController: UIViewController {
         activityIndicator.startAnimating()
         self.overlay.isHidden = true
         
-
+        
         // Do any additional setup after loading the view.
+    }
+    func addDoneButtonOnKeyboard() {
+        let doneToolbar: UIToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: 320, height: 50))
+        doneToolbar.barStyle       = UIBarStyle.default
+        let flexSpace              = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
+        let done: UIBarButtonItem  = UIBarButtonItem(title: "Done", style: UIBarButtonItem.Style.done, target: self, action: #selector(LoginViewController.doneButtonAction))
+        
+        var items = [UIBarButtonItem]()
+        items.append(flexSpace)
+        items.append(done)
+        
+        doneToolbar.items = items
+        doneToolbar.sizeToFit()
+        
+        self.username.inputAccessoryView = doneToolbar
+        self.password.inputAccessoryView = doneToolbar
+    }
+    
+    @objc func doneButtonAction() {
+        self.username.resignFirstResponder()
+        self.password.resignFirstResponder()
+        /* Or:
+         self.view.endEditing(true);
+         */
     }
     
     @IBAction func login(_ sender: Any) {
@@ -117,13 +145,13 @@ class LoginViewController: UIViewController {
     }
     
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destination.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }

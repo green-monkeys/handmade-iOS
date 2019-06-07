@@ -65,6 +65,11 @@ class ArtisanListViewController: UIViewController, UITableViewDelegate, UITableV
     override func viewDidLoad() {
         print("view did load")
         super.viewDidLoad()
+        if(delegate.cga?.firstName == nil){
+            print("Amazon account not registered as artisan")
+            self.logOut()
+            return
+        }
         self.cgaName.text = "\(delegate.cga!.firstName) \(delegate.cga!.lastName)"
         self.profileImage.image = ArtisanListViewController.resizeImage(image:UIImage(named: "profile.jpg")!, targetSize:CGSize(width:80, height:80))//This needs to be changed later
         self.profileImage.layer.cornerRadius = 40.0
